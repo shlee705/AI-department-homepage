@@ -18,3 +18,32 @@
 .detail-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px}.button.danger{background:#a64237;color:#fff}.button.danger:hover{background:#8c332a}.button.delete-button{color:#a64237;border-color:#e5ccc8}.delete-post-title{margin:16px 0!important;padding:14px;background:#f6f8f2;border-radius:5px;overflow-wrap:anywhere}.delete-actions{margin-top:26px}
 
 .post-admin-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}@media(max-width:600px){.detail-bottom{flex-wrap:wrap}.post-admin-actions{margin-left:auto;gap:7px}.post-admin-actions .button{padding:10px 12px;font-size:10px;gap:7px;min-height:40px}}
+
+/* 공식 교육과정의 학년·학기별 과목표 */
+.course-year { margin: 32px 0 48px; }
+.course-year header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 15px; }
+.course-year header h3 { margin: 0; font-size: 26px; }
+.course-year header span { color: #536861; font-size: 14px; }
+.course-terms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 26px; }
+.course-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-variant-numeric: tabular-nums; }
+.course-table caption { text-align: left; background: #edf4ef; border-top: 2px solid #176549; padding: 12px; font-size: 16px; font-weight: 700; }
+.course-table th, .course-table td { padding: 9px 6px; text-align: center; border-bottom: 1px solid var(--line); }
+.course-table th { font-size: 12px; color: #536861; }
+.course-table td { font-size: 13px; }
+.course-table th:first-child, .course-table td:first-child { text-align: left; padding-left: 12px; }
+.course-table th:not(:first-child) { width: 49px; }
+.course-table td:first-child { padding-block: 0; }
+.course-table button { width: 100%; display: block; text-align: left; padding: 9px 0; background: none; border: 0; color: #164a38; overflow-wrap: anywhere; }
+.course-table button span { font-size: 15px; font-weight: 650; }
+.course-table button small { display: block; font-size: 11px; margin-top: 3px; color: #536861; }
+.course-table button:hover span, .course-table button:focus-visible span { text-decoration: underline; }
+.course-detail h2 { padding-right: 20px; overflow-wrap: anywhere; }
+.course-detail dl { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 18px; background: #f1f6f2; }
+.course-detail dt { color: #536861; font-size: 12px; }
+.course-detail dd { margin: 4px 0 0; font-weight: 650; }
+.course-detail h3 { margin: 20px 0 8px; font-size: 16px; }
+.course-detail p { margin-bottom: 0; line-height: 1.85; }
+@media (max-width: 800px) {
+  .course-terms { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .course-year { margin-block: 24px 34px; }
+}

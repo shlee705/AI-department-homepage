@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Link, NavLink, Route, Routes, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, BookOpen, BrainCircuit, BriefcaseBusiness, Check, ChevronDown, ChevronLeft, ChevronRight, Code2, GraduationCap, House, LockKeyhole, LogIn, LogOut, Menu, Pause, PenLine, Play, Search, ShieldCheck, Sparkles, Trash2, UserRound, X } from 'lucide-react';
+import { curriculum, curriculumYear, courseSummaries } from './curriculum.js';
 import './styles.css';
 
 const AppContext = createContext(null);
@@ -9,9 +10,9 @@ const useApp = () => useContext(AppContext);
 const boardNames = { notices: '공지사항', careers: '채용정보' };
 const categories = { notices: ['전체', '학과', '학사', '장학', '프로그램'], careers: ['전체', '신입', '인턴', '연구'] };
 const majors = [
-  { name: '인공지능', en: 'Artificial Intelligence', icon: BrainCircuit, text: '데이터로 배우고, 지능으로 해결합니다.', subjects: ['기계학습', '딥러닝', '컴퓨터 비전', '자연어처리'] },
-  { name: '소프트웨어', en: 'Software Engineering', icon: Code2, text: '아이디어를 세상에 필요한 서비스로 만듭니다.', subjects: ['자료구조', '알고리즘', '데이터베이스', '소프트웨어공학'] },
-  { name: '정보보안', en: 'Information Security', icon: ShieldCheck, text: '안전하고 신뢰할 수 있는 디지털 세상을 만듭니다.', subjects: ['네트워크 보안', '시스템 보안', '암호학', '보안 프로젝트'] },
+  { key: 'ai', name: '인공지능', en: 'Artificial Intelligence', icon: BrainCircuit, text: '데이터로 배우고, 지능으로 해결합니다.' },
+  { key: 'software', name: '소프트웨어', en: 'Software Engineering', icon: Code2, text: '아이디어를 세상에 필요한 서비스로 만듭니다.' },
+  { key: 'security', name: '정보보안', en: 'Information Security', icon: ShieldCheck, text: '안전하고 신뢰할 수 있는 디지털 세상을 만듭니다.' },
 ];
 async function api(url, options = {}) {
   const response = await fetch(url, { credentials: 'same-origin', ...options, headers: { 'Content-Type': 'application/json', ...options.headers } });
@@ -143,7 +144,7 @@ function Header() {
 function Footer() {
   return <footer className="site-footer"><div className="container">
     <div className="footer-top"><Link to="/" className="footer-brand"><GraduationCap size={31} /><div><span>CHONNAM NATIONAL UNIVERSITY</span><strong>전남대학교 인공지능학부</strong></div></Link></div>
-    <div className="footer-bottom"><div><p>광주광역시 북구 용봉로 77 · 전남대학교 AI융합대학</p><p>학부 사무실 <a href="tel:0625304206">062-530-4206</a></p></div><div className="footer-note"><p>학부 공식 홈페이지를 참고한 미니 웹사이트입니다.</p><p>교육과정은 요약이며, 게시판 초기 자료는 예시입니다.</p><span>© 2026 CNU AI. Department website demo.</span></div></div>
+    <div className="footer-bottom"><div><p>광주광역시 북구 용봉로 77 · 전남대학교 AI융합대학</p><p>학부 사무실 <a href="tel:0625304206">062-530-4206</a></p></div><div className="footer-note"><p>학부 공식 홈페이지를 참고한 미니 웹사이트입니다.</p><p>게시판 초기 자료는 예시입니다.</p><span>© 2026 CNU AI. Department website demo.</span></div></div>
   </div></footer>;
 }
 
@@ -197,7 +198,7 @@ function Home() {
     <section className="discover-section" id="discover"><div className="container">
       <Reveal><div className="section-kicker"><span>01 — OUR DEPARTMENT</span><span>더 나은 미래를 향한 배움</span></div></Reveal>
       <div className="intro-heading"><Reveal><h2>질문에서 시작해,<br /><span>가능성으로 이어지다.</span></h2></Reveal><Reveal delay={100}><p>기술을 이해하는 깊이, 세상을 바라보는 넓이.<br />인공지능학부는 탄탄한 소프트웨어 역량을 바탕으로<br className="desktop-break" /> 미래를 이끌어 갈 지능형 소프트웨어 인재를 키웁니다.</p><Link to="/about" className="text-link">학과소개 자세히 보기<ArrowUpRight size={18} /></Link></Reveal></div>
-      <div className="major-grid">{majors.map((major, index) => <Reveal key={major.name} delay={index * 100}><Link className="major-card" to={`/curriculum?major=${index}`}><div className="major-card-top"><major.icon size={33} strokeWidth={1.4} /><span>0{index + 1}</span></div><span className="major-en">{major.en}</span><h3>{major.name}전공</h3><p>{major.text}</p><div className="major-card-bottom"><span>{major.subjects.slice(0, 2).join(' · ')}</span><ArrowUpRight size={22} /></div></Link></Reveal>)}</div>
+      <div className="major-grid">{majors.map((major, index) => <Reveal key={major.name} delay={index * 100}><Link className="major-card" to={`/curriculum?major=${index}`}><div className="major-card-top"><major.icon size={33} strokeWidth={1.4} /><span>0{index + 1}</span></div><span className="major-en">{major.en}</span><h3>{major.name}전공</h3><p>{major.text}</p><div className="major-card-bottom"><span>{curriculum[major.key].slice(0, 2).map(course => course.name).join(' · ')}</span><ArrowUpRight size={22} /></div></Link></Reveal>)}</div>
     </div></section>
     <section className="future-section container"><Reveal className="future-inner"><div><span className="eyebrow">YOUR NEXT CHAPTER</span><h2>당신의 내일을, 여기서 시작하세요.</h2><p>기초부터 실무까지, 나만의 가능성을 찾아가는 교육과정.</p></div><Link className="button primary" to="/curriculum">교육과정 살펴보기<ArrowUpRight size={18} /></Link><span className="future-watermark" aria-hidden="true">AI</span></Reveal></section>
   </>;
@@ -221,27 +222,67 @@ function About() {
 }
 
 function SourceNote() {
-  return <p className="source-note">학부 소개를 참고하여 요약한 내용이며, 교육과정은 이해를 돕기 위한 예시입니다.</p>;
+  return <p className="source-note">전남대학교 인공지능학부의 학부 소개를 요약했습니다.</p>;
+}
+
+const courseTypes = { 전선: '전공선택', 전필: '전공필수', 교필: '교양필수' };
+
+function CoursePanel({ major, index }) {
+  const [selected, setSelected] = useState(null);
+  return <section id="curriculum-panel" role="tabpanel" aria-labelledby={`major-tab-${index}`}>
+    <div className="curriculum-intro">
+      <major.icon size={42} strokeWidth={1.3} />
+      <div><h3>{major.name}전공</h3><p>{major.text}</p></div><span>{major.en}</span>
+    </div>
+    {[1, 2, 3, 4].map(year => {
+      const scope = year <= 2 ? 'common' : major.key;
+      return <section key={year} className="course-year" aria-label={`${year}학년 교과목`}>
+        <header><h3>{year}학년</h3><span>{year <= 2 ? '학부 공통' : `${major.name}전공`}</span></header>
+        <div className="course-terms">{[1, 2].map(semester => (
+          <table key={semester} className="course-table">
+            <caption>{semester}학기</caption>
+            <thead><tr><th scope="col">교과목명 · 코드</th><th scope="col">구분</th><th scope="col">학점</th></tr></thead>
+            <tbody>{curriculum[scope].filter(course => course.year === year && course.semester === semester).map(course => (
+              <tr key={course.code}>
+                <td><button type="button" aria-haspopup="dialog" onClick={() => setSelected(course)}>
+                  <span>{course.name}</span><small>{course.code}</small>
+                </button></td>
+                <td>{course.type}</td><td>{course.credits}</td>
+              </tr>
+            ))}</tbody>
+          </table>
+        ))}</div>
+      </section>;
+    })}
+    {selected && <Modal title={selected.name} onClose={() => setSelected(null)}>
+      <div className="course-detail">
+        <span className="eyebrow">{curriculumYear}학년도 · {selected.year <= 2 ? '학부 공통' : `${major.name}전공`}</span>
+        <h2>{selected.name}</h2>
+        <dl>{[
+          ['교과목코드', selected.code], ['개설 시기', `${selected.year}학년 ${selected.semester}학기`],
+          ['이수 구분', courseTypes[selected.type]], ['학점', selected.credits],
+        ].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+        <h3>과목 설명</h3><p>{courseSummaries[selected.code]}</p>
+      </div>
+    </Modal>}
+  </section>;
 }
 
 function Curriculum() {
   const [params, setParams] = useSearchParams();
   const index = Math.min(2, Math.max(0, Number.parseInt(params.get('major'), 10) || 0));
-  const major = majors[index];
-  const years = [
-    { year: '1', title: '가능성의 기초', subtitle: 'FOUNDATION', desc: '수학적 사고와 프로그래밍의 기본기를 다집니다.', subjects: ['프로그래밍 기초', '이산수학', '기초 수학', '컴퓨팅 사고'] },
-    { year: '2', title: '전공의 뼈대', subtitle: 'CORE KNOWLEDGE', desc: '컴퓨터 시스템과 데이터에 대한 이해를 넓힙니다.', subjects: ['자료구조', '알고리즘', '운영체제', '데이터베이스'] },
-    { year: '3', title: '관심 분야의 깊이', subtitle: 'SPECIALIZATION', desc: '전공별 핵심 기술을 배우고 응용합니다.', subjects: major.subjects },
-    { year: '4', title: '배움에서 실무로', subtitle: 'CONNECTION', desc: '프로젝트를 통해 실제 문제를 해결합니다.', subjects: ['캡스톤 디자인', '전공 심화 프로젝트', '산학 연계 활동', '진로 탐색'] },
-  ];
-  return <><PageBanner title="교육과정" en="LEARNING JOURNEY" description="기초를 단단히, 전공을 깊이. 당신만의 배움의 길을 설계하세요." />
-    <div className="container content-page"><div className="section-header curriculum-header"><div><span className="eyebrow">THREE MAJORS, ENDLESS POSSIBILITIES</span><h2>세 가지 전공, 연결되는 가능성</h2></div><span className="summary-badge">교육과정 요약</span></div>
-      <div className="major-tabs" role="tablist" aria-label="전공 선택">{majors.map((m, i) => <button key={m.name} role="tab" id={`major-tab-${i}`} aria-selected={index === i} aria-controls="curriculum-panel" onClick={() => setParams({ major: String(i) })}><m.icon size={21} />{m.name}전공</button>)}</div>
-      <section id="curriculum-panel" role="tabpanel" aria-labelledby={`major-tab-${index}`}><div className="curriculum-intro"><major.icon size={42} strokeWidth={1.3} /><div><h3>{major.name}전공</h3><p>{major.text}</p></div><span>{major.en}</span></div>
-        <div className="year-grid">{years.map(year => <div key={year.year} className="year-card"><span className="year-number">{year.year}<small>학년</small></span><span className="eyebrow">{year.subtitle}</span><h3>{year.title}</h3><p>{year.desc}</p><ul>{year.subjects.map(subject => <li key={subject}><Check size={14} />{subject}</li>)}</ul></div>)}</div>
-      </section><SourceNote />
+  return <><PageBanner title="교육과정" en="CURRICULUM" description="학년과 학기별 교과목을 확인하고, 과목명을 선택해 상세 설명을 읽어 보세요." />
+    <div className="container content-page">
+      <div className="section-header curriculum-header"><h2>{curriculumYear}학년도 교육과정</h2></div>
+      <div className="major-tabs" role="tablist" aria-label="전공 선택">{majors.map((m, i) => (
+        <button key={m.key} role="tab" id={`major-tab-${i}`} aria-selected={index === i} aria-controls="curriculum-panel" onClick={() => setParams({ major: String(i) })}>
+          <m.icon size={21} />{m.name}전공
+        </button>
+      ))}</div>
+      <CoursePanel key={index} index={index} major={majors[index]} />
     </div></>;
 }
+
 
 function WritePost({ board, post = null, onClose, onSaved }) {
   const isCareer = board === 'careers';
